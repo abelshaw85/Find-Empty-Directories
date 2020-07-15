@@ -11,14 +11,18 @@ public class Main {
         String path = scanner.nextLine();
         System.out.println("Please select an option by selecting its number:\n" +
                 "1. Find all empty directories\n" +
-                "2. Find the folder with the most files");
+                "2. Find the folder with the most files\n" +
+                "3. Find the deepest file/directory");
         String command = scanner.nextLine();
         switch (command) {
             case "1":
-                EmptyDirectoryFinder.findEmptyDirectories(path);
+                EmptyDirectoryFinder.find(path);
                 break;
             case "2":
-                DirectoryWithMostFilesFinder.findFolderWithMostFiles(path);
+                DirectoryWithMostFilesFinder.find(path);
+                break;
+            case "3":
+                DeepestFileFinder.find(path);
                 break;
             default:
                 System.out.println("Invalid command");

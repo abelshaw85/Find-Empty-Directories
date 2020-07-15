@@ -12,7 +12,7 @@ public class EmptyDirectoryFinder {
 
     private EmptyDirectoryFinder() { }
 
-    public static void findEmptyDirectories(String path) {
+    public static void find(String path) {
         if (Files.exists(Paths.get(path))) {
             try (Stream<Path> walk = Files.walk(Paths.get(path))) {
                 walk.filter(Files::isDirectory)

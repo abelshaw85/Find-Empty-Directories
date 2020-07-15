@@ -6,28 +6,27 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
-import java.util.Objects;
 import java.util.stream.Stream;
 
-public class DirectoryWithMostFilesFinder {
-
-    private DirectoryWithMostFilesFinder() { }
+public class DeepestFileFinder {
+    private DeepestFileFinder()  { }
 
     public static void find(String path) {
         if (Files.exists(Paths.get(path))) {
             try (Stream<Path> walk = Files.walk(Paths.get(path))) {
-                File folderWithMostFiles = walk.filter(Files::isDirectory)
-                        .skip(1) //skips the "root" directory... otherwise it would always be the folder with the most files :)
+                File deepestFile = walk
                         .map(Path::toFile)
-                        .max(Comparator.comparingInt(file -> Objects.requireNonNull(file.list()).length))
+                        .max(Comparator.comparingInt(file -> (int) file.getAbsolutePath().chars().filter(c -> c == '\\').count()))
                         .get();
-                System.out.println(folderWithMostFiles.getName() + " has the most files.\n" +
-                        "Number of files: " + folderWithMostFiles.list().length);
+                System.out.println(deepestFile.getName() + " is the deepest file.\n" +
+                        "Located at: " + deepestFile.getAbsolutePath() + "\n" +
+                        "Number of parents: " + (deepestFile.getAbsolutePath().chars().filter(c -> c == '\\').count() - 1)); // -1 to exclude the main drive letter
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
             System.out.println("Cannot traverse folder - folder does not exist");
         }
+
     }
 }
